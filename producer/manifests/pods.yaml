@@ -1,0 +1,13 @@
+piVersion: v1
+kind: Pod
+metadata:
+  name: producer
+  namespace: etl-black-friday
+spec:
+  containers:
+  - name: producer
+    image: producer:latest
+    imagePullPolicy: Never
+    env:
+    - name: COLLECTOR_URL
+      value: http://10.105.95.164:8095/api/v1/collect

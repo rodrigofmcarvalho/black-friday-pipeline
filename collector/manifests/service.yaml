@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: collector
+  namespace: etl-black-friday
+spec:
+  selector:
+    app: collector
+  ports:
+    - name: collector
+      protocol: TCP
+      port: 80
+      targetPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: collector-node
+  namespace: etl-black-friday
+spec:
+  type: LoadBalancer
+  selector:
+    app: collector
+  ports:
+    - name: collector
+      protocol: TCP
+      port: 8095
+      targetPort: 80

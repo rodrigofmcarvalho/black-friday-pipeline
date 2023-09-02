@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "etl-black-friday"
+version = "0.1.0"
+description = ""
+authors = ["Rodrigo Carvalho <rodrigofmcarvalho@gmail.com>"]
+readme = "README.md"
+packages = [{include = "etl_black_friday"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+confluent-kafka = "^2.2.0"
+faker = "^19.1.0"
+pandas = "^2.0.3"
+pyspark = "^3.4.1"
+flask = "^2.3.2"
+jsonschema = "^4.18.4"
+requests = "^2.31.0"
+python-dotenv = "^1.0.0"
+sqlalchemy = "^2.0.19"
+psycopg2-binary = "^2.9.6"
+types-python-dateutil = "^2.8.19.14"
+avro = "^1.11.2"
+msgpack = "^1.0.5"
+fastapi = "^0.103.0"
+uvicorn = "^0.23.2"
+
+[tool.poetry.group.dev.dependencies]
+blue = "^0.9.1"
+isort = "^5.12.0"
+yapf = "^0.40.1"
+mypy = "^1.4.1"
+pyright = "^1.1.318"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
