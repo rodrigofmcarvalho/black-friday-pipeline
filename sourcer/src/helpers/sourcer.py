@@ -10,7 +10,7 @@ import sys
 from dateutil.relativedelta import TH, relativedelta
 from faker import Faker
 
-from sourcer.src.config.constants import (
+from config.constants import (
     BLACK_FRIDAY_MONTH,
     BLACK_FRIDAY_START_DAY,
     BLACK_FRIDAY_WEEK,

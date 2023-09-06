@@ -3,15 +3,24 @@ import requests
 
 import json
 
-from producer.src.config.constants import (
+from config.constants import (
     EVENT_TYPE,
-    MAX_NUM_ITEMS,
-    MAX_NUM_USERS,
-    PRODUCTS_JSON_FILE,
-    SCHEMA_VERSION,
+    SCHEMA_VERSION
 )
 
-from helpers.sourcer import Sourcer
+from confluent_kafka import Consumer 
+
+# Configuration for Kafka Consumer
+kafka_conf = {
+    'bootstrap.servers': 'localhost:9092',
+    'client.id': 'sourcer-fastapi',
+    'group.id' : 'producer-fastapi',
+    'auto.offset.reset': 'earliest',
+}
+
+# Configuration for Kafka Consumer
+consumer = Consumer(kafka_conf)
+consumer.subscribe(['orders'])
 
 if __name__ == '__main__':
 
@@ -20,18 +29,21 @@ if __name__ == '__main__':
         'schema_version': SCHEMA_VERSION,
     }
     # URL = os.environ['COLLECTOR_URL']
-    URL = 'http://10.105.95.164:8095/api/v1/collect'
+    URL = 'http://10.109.94.250:8095/api/v1/collect'
 
-    source = Sourcer(
-        MAX_NUM_USERS,
-        MAX_NUM_ITEMS,
-        PRODUCTS_JSON_FILE,
-    )
-
-    for order_data in source.source_random_order_data():
+    while True:
+        order_data = consumer.poll(1.0)
+        if order_data is None:
+            continue
+        if order_data.error():
+            print("Consumer error: {}".format(order_data.error()))
+            continue
         try:
-            order_data_dict = json.loads(order_data)
+            order_data_str = order_data.value()
+            order_data_str = order_data_str.decode('utf-8')
+            order_data_dict = json.loads(order_data_str)
             processed_event = {**TOP_LEVEL_FIELDS, 'payload': order_data_dict}
+            print(processed_event)
             response = requests.post(
                 URL,
                 data=json.dumps(processed_event),

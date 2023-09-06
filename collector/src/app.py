@@ -25,7 +25,7 @@ async def root():
 
 
 @app.post(f"/api/{conf.V_API}{conf.COLLECTOR_PATH}")
-async def write_data(data):
+async def write_data(data: TopLevelSchema):
 
     try:
         processed_data = Processor(data.dict()).processed_event
